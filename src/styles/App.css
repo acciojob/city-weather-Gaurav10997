@@ -1,1 +1,25 @@
-
+.main__div{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    width: 40%;
+    height: 40vh;
+    background-color: antiquewhite;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+input{
+    padding: 1em;
+    border-radius: 15px;
+    width: 60%;
+    font-size: large;
+}
+input:focus{
+    padding: 1em;
+    border-radius: 15px;
+    width: 60%;
+    font-size: large;
+}
