@@ -1,38 +1,51 @@
-
 import React, { useEffect, useState } from "react";
 import './../styles/App.css';
 
+const API_KEY = "5cda408868102eddd87731d415f81a39";
+
 const App = () => {
-  const [city,setCity] = useState("");
-  const [cityData,setCityData] = useState({})
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
 
-  useEffect(()=>{
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=9011d75570efeeadd2d88a15f8a68377`)
-    .then((res)=>res.json())
-    .then((data)=>setCityData(data))
-  },[city])
+  const handleInputChange = (event) => {
+    setCity(event.target.value);
+  };
 
+  const handleSearch = () => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setWeatherData(data);
+      })
+      .catch(error => {
+        console.error("Error fetching weather data:", error);
+      });
+  };
 
   return (
-    <div className="main__div">
-      <input
-        type="text"
-        onChange={(e) => setCity(e.target.value)}
-        placeholder="Enter city name"
-      ></input>
-        <div className="weather">
-          <h1>{cityData.name}</h1>
-          { cityData && <h1>
-          {cityData && Math.round((cityData?.main?.temp - 273), 2).toFixed(2)} °C
-          </h1>}
-          <p>{cityData && cityData.weather && cityData.weather.length > 0 && (
-  <p>{cityData.weather[0].description}</p>
-   
-)}</p>
-               </div>
-      
+    <div>
+      <div className="search">
+        <input
+          type='text'
+          placeholder="Enter a City"
+          value={city}
+          onChange={handleInputChange}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
+      <div className="weather">
+        {weatherData && (
+          <div>
+            <h2>Weather in {weatherData.name}, {weatherData.sys.country}</h2>
+            <p>Temperature: {weatherData.main.temp} °K</p>
+            <p>{weatherData.weather['0'].description}</p>
+            {/* Add more weather information as needed */}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
 
-export default App
+export default App;
